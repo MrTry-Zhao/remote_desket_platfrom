@@ -16,16 +16,16 @@
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
+USE desket_platfrom;
 -- ----------------------------
 -- Table structure for bug_type
 -- ----------------------------
 DROP TABLE IF EXISTS `bug_type`;
 CREATE TABLE `bug_type`  (
   `type_id` int NOT NULL AUTO_INCREMENT COMMENT '类型id',
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '类型',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '类型',
   PRIMARY KEY (`type_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of bug_type
@@ -93,12 +93,12 @@ CREATE TABLE `user_book_borrow`  (
 DROP TABLE IF EXISTS `user_bug_message`;
 CREATE TABLE `user_bug_message`  (
   `bug_id` bigint NOT NULL AUTO_INCREMENT COMMENT '报错id',
-  `bug_titile` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '报错主题',
-  `bug_solve` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '报错解决',
+  `bug_titile` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '报错主题',
+  `bug_solve` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '报错解决',
   `release_time` datetime NOT NULL COMMENT '发布时间',
   `user_student_number` bigint NOT NULL COMMENT '用户id',
   PRIMARY KEY (`bug_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_bug_message
@@ -111,7 +111,7 @@ DROP TABLE IF EXISTS `user_bug_type`;
 CREATE TABLE `user_bug_type`  (
   `bug_type_id` int NOT NULL COMMENT '报错类型id',
   `bug_id` bigint NOT NULL COMMENT '报错id'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_bug_type
@@ -124,11 +124,11 @@ DROP TABLE IF EXISTS `user_file_up`;
 CREATE TABLE `user_file_up`  (
   `up_id` bigint NOT NULL AUTO_INCREMENT COMMENT '上传id',
   `user_student_number` bigint NOT NULL COMMENT '用户id',
-  `up_file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '上传文件路径',
+  `up_file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '上传文件路径',
   `up_time` datetime NOT NULL COMMENT '上传时间',
-  `up_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '上传者ip',
+  `up_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '上传者ip',
   PRIMARY KEY (`up_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_file_up
@@ -142,9 +142,9 @@ CREATE TABLE `user_login_log`  (
   `log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '登录日志id',
   `user_student_number` bigint NOT NULL COMMENT '用户id',
   `login_time` datetime NOT NULL COMMENT '登录时间',
-  `login_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '登录ip',
+  `login_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '登录ip',
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_login_log
