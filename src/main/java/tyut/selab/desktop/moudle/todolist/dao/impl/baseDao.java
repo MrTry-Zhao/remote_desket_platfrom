@@ -4,12 +4,12 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 
-public    class baseDao {
+public class baseDao {
 
     public baseDao() throws SQLException {
     }
 
-    public int executeUpdate(String sql, Object... parms) throws SQLException {
+    public   int executeUpdate(String sql, Object... parms) throws SQLException {
         //从连接池拿连接，创小车
         Connection connection = JDBC.getConnection();
         PreparedStatement ps = connection.prepareStatement(sql);
