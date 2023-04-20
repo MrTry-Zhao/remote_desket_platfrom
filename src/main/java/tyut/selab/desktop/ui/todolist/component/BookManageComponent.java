@@ -129,7 +129,7 @@ public class BookManageComponent extends Box {
 
     //请求数据
     public void requestData() {
-        
+
         //清空tableData的数据
         tableData.clear();
         //刷新表格
