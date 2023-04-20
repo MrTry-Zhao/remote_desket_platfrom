@@ -57,15 +57,15 @@ public class TaskDao extends baseDao implements ITaskDao {
                 "task_start_time=?,\n" +
                 "task_end_time=?\n" +
                 "WHERE\n" +
-                "user_student_number=?;",newTask.getTaskId(),newTask.getUserStudentNumber(),
-                newTask.getTaskContent(),newTask.getTaskStartTime(),newTask.getTaskEndTime(),oldTask.getUserStudentNumber());
+                "task_id=?;",newTask.getTaskId(),newTask.getUserStudentNumber(),
+                newTask.getTaskContent(),newTask.getTaskStartTime(),newTask.getTaskEndTime(),oldTask.getTaskId());
         return 0;
     }
 
     @Override
     public int deleteTask(Task task) throws SQLException {
         int i = executeUpdate("DELETE FROM user_tasks_list\n" +
-                "WHERE user_student_number=?;\n",task.getUserStudentNumber());
+                "WHERE task_id=?;\n",task.getTaskId());
         return 0;
     }
 }
