@@ -2,6 +2,8 @@ package tyut.selab.desktop.ui.todolist.component;
 
 
 
+import tyut.selab.desktop.moudle.todolist.controller.impl.TaskController;
+import tyut.selab.desktop.moudle.todolist.domain.vo.TaskVo;
 import tyut.selab.desktop.ui.todolist.listener.ActionDoneListener;
 import tyut.selab.desktop.ui.todolist.utils.ScreenUtils;
 
@@ -9,6 +11,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,20 +93,31 @@ public class UpdateBookDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //获取用户修改后在输入框中输入的内容
-                String name = nameField.getText().trim();
-                String stock = stockField.getText().trim();
-                String author = authorField.getText().trim();
-                String price = priceField.getText().trim();
-                String desc = descArea.getText().trim();
+                Integer taskID = Integer.valueOf(nameField.getText().trim());
+                Integer userStudentNumber = Integer.valueOf(stockField.getText().trim());
+                String taskST = authorField.getText().trim();
+                String taskET = priceField.getText().trim();
+                String taskContent = descArea.getText().trim();
 
-                Map<String,String> params = new HashMap<>();
-                params.put("name",name);
-                params.put("description",desc);
-                params.put("author",author);
-                params.put("price",price);
-                params.put("stock",stock);
-                params.put("id",map.get("id").toString());
-                //访问后台接口
+                SimpleDateFormat taskStartTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat taskEndTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
+
+                Date taskStartTime = null;
+                Date taskEndTime = null;
+                try {
+                    taskStartTime = taskStartTimeFormat.parse(taskST);
+                    taskEndTime = taskEndTimeFormat.parse(taskET);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                TaskVo taskVo = new TaskVo(taskID,userStudentNumber,taskContent,taskStartTime,taskEndTime);
+                TaskController taskController = new TaskController();
+                try {
+                    taskController.updateTask(taskVo);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
 
             }
         });

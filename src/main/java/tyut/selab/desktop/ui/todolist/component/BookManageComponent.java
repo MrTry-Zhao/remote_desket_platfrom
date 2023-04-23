@@ -4,6 +4,8 @@ package tyut.selab.desktop.ui.todolist.component;
 
 
 
+import tyut.selab.desktop.moudle.todolist.controller.impl.TaskController;
+import tyut.selab.desktop.moudle.todolist.domain.vo.TaskVo;
 import tyut.selab.desktop.ui.todolist.listener.ActionDoneListener;
 
 import javax.swing.*;
@@ -11,6 +13,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Vector;
 
 public class BookManageComponent extends Box {
@@ -37,6 +44,14 @@ public class BookManageComponent extends Box {
         JButton addBtn = new JButton("添加");
         JButton updateBtn = new JButton("修改");
         JButton deleteBtn = new JButton("删除");
+        JButton queryBtn = new JButton("查询");
+
+        queryBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         addBtn.addActionListener(new ActionListener() {
             @Override
@@ -65,7 +80,7 @@ public class BookManageComponent extends Box {
                 String id = tableModel.getValueAt(selectedRow, 0).toString();
 
                 //弹出一个对话框，让用户修改
-                new UpdateBookDialog(jf, "修改图书", true, new ActionDoneListener() {
+                new UpdateBookDialog(jf, "修改任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
                         requestData();
@@ -91,7 +106,33 @@ public class BookManageComponent extends Box {
                     return;
                 }
 
-                String id = tableModel.getValueAt(selectedRow, 0).toString();
+                //获取所选行的数据
+                Integer taskID = Integer.valueOf(tableModel.getValueAt(selectedRow, 0).toString());
+                Integer userStudentNumber = Integer.valueOf(tableModel.getValueAt(selectedRow, 1).toString());
+                String taskST = tableModel.getValueAt(selectedRow, 2).toString();
+                String taskET = tableModel.getValueAt(selectedRow, 3).toString();
+                String taskContent = tableModel.getValueAt(selectedRow, 4).toString();
+
+                SimpleDateFormat taskStartTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat taskEndTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
+
+                Date taskStartTime = null;
+                Date taskEndTime = null;
+                try {
+                    taskStartTime = taskStartTimeFormat.parse(taskST);
+                    taskEndTime = taskEndTimeFormat.parse(taskET);
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                //删除数据
+                TaskVo taskVo = new TaskVo(taskID,userStudentNumber,taskContent,taskStartTime,taskEndTime);
+                TaskController taskController = new TaskController();
+                try {
+                    taskController.deleteTask(taskVo);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
 
             }
         });
@@ -105,9 +146,7 @@ public class BookManageComponent extends Box {
         //组装表格
         String[] ts = {"任务名称", "发任务者", "开始日期", "截止日期", "任务介绍", "失败惩罚"};
         titles = new Vector<>();
-        for (String title : ts) {
-            titles.add(title);
-        }
+        titles.addAll(Arrays.asList(ts));
 
         tableData = new Vector<>();
 
