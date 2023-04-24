@@ -2,6 +2,7 @@ package tyut.selab.desktop.ui.todolist.component;
 
 
 
+import javafx.concurrent.Task;
 import tyut.selab.desktop.moudle.todolist.controller.impl.TaskController;
 import tyut.selab.desktop.moudle.todolist.domain.vo.TaskVo;
 import tyut.selab.desktop.ui.todolist.listener.ActionDoneListener;
@@ -32,22 +33,22 @@ public class AddBookDialog extends JDialog {
         Box vBox = Box.createVerticalBox();
 
         //组装图书名称
-        Box nameBox = Box.createHorizontalBox();
-        JLabel nameLable = new JLabel("任务编号：");
-        JTextField nameField = new JTextField(15);
-
-        nameBox.add(nameLable);
-        nameBox.add(Box.createHorizontalStrut(20));
-        nameBox.add(nameField);
+//        Box nameBox = Box.createHorizontalBox();
+//        JLabel nameLable = new JLabel("任务编号：");
+//        JTextField nameField = new JTextField(15);
+//
+//        nameBox.add(nameLable);
+//        nameBox.add(Box.createHorizontalStrut(20));
+//        nameBox.add(nameField);
 
         //组装图书库存
-        Box stockBox = Box.createHorizontalBox();
-        JLabel stockLable = new JLabel("用户编号：");
-        JTextField stockField = new JTextField(15);
-
-        stockBox.add(stockLable);
-        stockBox.add(Box.createHorizontalStrut(20));
-        stockBox.add(stockField);
+//        Box stockBox = Box.createHorizontalBox();
+//        JLabel stockLable = new JLabel("用户编号：");
+//        JTextField stockField = new JTextField(15);
+//
+//        stockBox.add(stockLable);
+//        stockBox.add(Box.createHorizontalStrut(20));
+//        stockBox.add(stockField);
 
         //组装任务简介
         Box descBox = Box.createHorizontalBox();
@@ -57,15 +58,15 @@ public class AddBookDialog extends JDialog {
         descBox.add(descLable);
         descBox.add(Box.createHorizontalStrut(20));
         descBox.add(descArea);
-
-        //组装开始日期
-        Box authorBox = Box.createHorizontalBox();
-        JLabel authorLable = new JLabel("开始日期：");
-        JTextField authorField = new JTextField(15);
-
-        authorBox.add(authorLable);
-        authorBox.add(Box.createHorizontalStrut(20));
-        authorBox.add(authorField);
+//
+//        //组装开始日期
+//        Box authorBox = Box.createHorizontalBox();
+//        JLabel authorLable = new JLabel("开始日期：");
+//        JTextField authorField = new JTextField(15);
+//
+//        authorBox.add(authorLable);
+//        authorBox.add(Box.createHorizontalStrut(20));
+//        authorBox.add(authorField);
 
         //组装截止日期
         Box priceBox = Box.createHorizontalBox();
@@ -86,9 +87,9 @@ public class AddBookDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //获取用户的录入
-                Integer taskID = Integer.parseInt(nameField.getText().trim());
-                Integer userStudentNumber = Integer.valueOf(stockField.getText().trim());
-                String taskST= authorField.getText().trim();
+                Integer taskID = null;
+                Integer userStudentNumber = 2022005553;
+                String taskST= null;
                 String  taskET= priceField.getText().trim();
                 String taskContent  = descArea.getText().trim();
                 //String转Date
@@ -98,7 +99,7 @@ public class AddBookDialog extends JDialog {
                 Date taskStartTime = null;
                 Date taskEndTime = null;
                 try {
-                    taskStartTime = taskStartTimeFormat.parse(taskST);
+                    taskStartTime = new Date();
                     taskEndTime = taskEndTimeFormat.parse(taskET);
                 } catch (ParseException ex) {
                     throw new RuntimeException(ex);
@@ -114,6 +115,7 @@ public class AddBookDialog extends JDialog {
                 }
 
                 JOptionPane.showMessageDialog(jf,"添加成功");
+
                 dispose();
                 listener.done(null);
             }
@@ -122,14 +124,14 @@ public class AddBookDialog extends JDialog {
 
         btnBox.add(addBtn);
 
-        vBox.add(Box.createVerticalStrut(20));
-        vBox.add(nameBox);
-        vBox.add(Box.createVerticalStrut(15));
-        vBox.add(stockBox);
+//        vBox.add(Box.createVerticalStrut(20));
+//        vBox.add(nameBox);
+//        vBox.add(Box.createVerticalStrut(15));
+//        vBox.add(stockBox);
         vBox.add(Box.createVerticalStrut(15));
         vBox.add(descBox);
-        vBox.add(Box.createVerticalStrut(15));
-        vBox.add(authorBox);
+//        vBox.add(Box.createVerticalStrut(15));
+//        vBox.add(authorBox);
         vBox.add(Box.createVerticalStrut(15));
         vBox.add(priceBox);
 
@@ -143,6 +145,10 @@ public class AddBookDialog extends JDialog {
         hBox.add(Box.createHorizontalStrut(20));
 
         this.add(hBox);
+
+    }
+    public void requestData(TaskVo taskVo){
+
 
     }
 

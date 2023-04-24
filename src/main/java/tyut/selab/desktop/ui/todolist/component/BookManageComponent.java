@@ -144,7 +144,7 @@ public class BookManageComponent extends Box {
         this.add(btnPanel);
 
         //组装表格
-        String[] ts = {"任务编号", "用户编号", "任务介绍", "开始日期", "截止日期"};
+        String[] ts = {"任务编号", "用户学号", "任务介绍", "开始日期", "截止日期"};
         titles = new Vector<>();
         titles.addAll(Arrays.asList(ts));
 

@@ -33,19 +33,19 @@ public class TaskDao extends baseDao implements ITaskDao {
 //        return null;
 //    }
 
-    @Override
-    public int insertTask(Task task) throws SQLException {
 
+    public int insertTask(Task task) throws SQLException {
         int len = executeUpdate("INSERT INTO user_tasks_list \n" +
-                "\t(task_id,\n" +
                 "\t user_student_number,\n" +
                 "\t task_content,\n" +
                 "\t task_start_time,\n" +
                 "\t task_end_time)\n" +
-                "\t VALUE(?,?,?,?,?);", task.getTaskId(), task.getUserStudentNumber(), task.getTaskContent(), task.getTaskStartTime(), task.getTaskEndTime());
+                "\t VALUES (?,?,?,?);", task.getUserStudentNumber(), task.getTaskContent(), task.getTaskStartTime(), task.getTaskEndTime());
 
         return 0;
     }
+
+
 
     @Override
     public int updateTask(Task newTask, Task oldTask) throws SQLException {
