@@ -3,6 +3,7 @@ package tyut.selab.desktop.ui.todolist.manager;
 
 
 import tyut.selab.desktop.ui.todolist.component.BookManageComponent;
+import tyut.selab.desktop.ui.todolist.utils.AlarmClock01;
 import tyut.selab.desktop.ui.todolist.utils.PathUtils;
 import tyut.selab.desktop.ui.todolist.utils.ScreenUtils;
 
@@ -29,34 +30,6 @@ public class ManagerInterface {
         jf.setBounds((ScreenUtils.getScreenWidth() - WIDTH) / 2, (ScreenUtils.getScreenHeight() - HEIGHT) / 2, WIDTH, HEIGHT);
         jf.setResizable(false);
         jf.setIconImage(ImageIO.read(new File(PathUtils.getRealPath("logo.png"))));
-
-        //设置菜单栏
-        JMenuBar jmb = new JMenuBar();
-        JMenu jMenu = new JMenu("设置");
-        JMenuItem m1 = new JMenuItem("切换账号");
-        JMenuItem m2 = new JMenuItem("退出程序");
-        m1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    new MainInterface().init();
-                    jf.dispose();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        m2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        jMenu.add(m1);
-        jMenu.add(m2);
-        jmb.add(jMenu);
-
-        jf.setJMenuBar(jmb);
 
         //设置分割面板
         JSplitPane sp = new JSplitPane();
@@ -128,6 +101,8 @@ public class ManagerInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        AlarmClock01 alarmClock01 = new AlarmClock01();
+        alarmClock01.start();
     }
 
     //自定义结点绘制器
