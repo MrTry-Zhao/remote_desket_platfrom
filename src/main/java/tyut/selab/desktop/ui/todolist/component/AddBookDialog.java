@@ -1,7 +1,6 @@
 package tyut.selab.desktop.ui.todolist.component;
 
 
-
 import javafx.concurrent.Task;
 import tyut.selab.desktop.moudle.todolist.controller.impl.TaskController;
 import tyut.selab.desktop.moudle.todolist.domain.vo.TaskVo;
@@ -9,26 +8,29 @@ import tyut.selab.desktop.ui.todolist.listener.ActionDoneListener;
 import tyut.selab.desktop.ui.todolist.utils.ScreenUtils;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AddBookDialog extends JDialog {
+    private JTable table;
+    private Vector<String> titles;
+    private Vector<Vector> tableData;
+    private DefaultTableModel tableModel;
     final int WIDTH = 400;
     final int HEIGHT = 300;
 
     private ActionDoneListener listener;
 
-    public AddBookDialog(JFrame jf, String title, boolean isModel, ActionDoneListener listener){
-        super(jf,title,isModel);
-        this.listener  = listener;
+    public AddBookDialog(JFrame jf, String title, boolean isModel, ActionDoneListener listener) {
+        super(jf, title, isModel);
+        this.listener = listener;
         //组装视图
-        this.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2,(ScreenUtils.getScreenHeight()-HEIGHT)/2,WIDTH,HEIGHT);
+        this.setBounds((ScreenUtils.getScreenWidth() - WIDTH) / 2, (ScreenUtils.getScreenHeight() - HEIGHT) / 2, WIDTH, HEIGHT);
 
         Box vBox = Box.createVerticalBox();
 
@@ -53,7 +55,7 @@ public class AddBookDialog extends JDialog {
         //组装任务简介
         Box descBox = Box.createHorizontalBox();
         JLabel descLable = new JLabel("任务介绍：");
-        JTextArea descArea = new JTextArea(3,15);
+        JTextArea descArea = new JTextArea(3, 15);
 
         descBox.add(descLable);
         descBox.add(Box.createHorizontalStrut(20));
@@ -78,8 +80,6 @@ public class AddBookDialog extends JDialog {
         priceBox.add(priceField);
 
 
-
-
         //组装按钮
         Box btnBox = Box.createHorizontalBox();
         JButton addBtn = new JButton("添加");
@@ -89,12 +89,12 @@ public class AddBookDialog extends JDialog {
                 //获取用户的录入
                 Integer taskID = null;
                 Integer userStudentNumber = 2022005553;
-                String taskST= null;
-                String  taskET= priceField.getText().trim();
-                String taskContent  = descArea.getText().trim();
+                String taskST = null;
+                String taskET = priceField.getText().trim();
+                String taskContent = descArea.getText().trim();
                 //String转Date
-                SimpleDateFormat taskStartTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat taskEndTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat taskStartTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat taskEndTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                 Date taskStartTime = null;
                 Date taskEndTime = null;
@@ -107,14 +107,14 @@ public class AddBookDialog extends JDialog {
 
                 //添加数据
                 TaskController taskController = new TaskController();
-                TaskVo taskVo = new TaskVo(taskID,userStudentNumber,taskContent,taskStartTime,taskEndTime);
+                TaskVo taskVo = new TaskVo(taskID, userStudentNumber, taskContent, taskStartTime, taskEndTime);
                 try {
                     taskController.insertTask(taskVo);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
 
-                JOptionPane.showMessageDialog(jf,"添加成功");
+                JOptionPane.showMessageDialog(jf, "添加成功");
 
                 dispose();
                 listener.done(null);
@@ -147,8 +147,23 @@ public class AddBookDialog extends JDialog {
         this.add(hBox);
 
     }
-    public void requestData(TaskVo taskVo){
 
+    public void requestData(TaskVo taskVo) {
+
+        String ts = " "+taskVo.getTaskId() + taskVo.getUserStudentNumber() +
+                taskVo.getTaskContent() + taskVo.getTaskStartTime() + taskVo.getTaskEndTime();
+        titles = new Vector<>();
+        titles.addAll(Arrays.asList(ts));
+
+        tableData = new Vector<>();
+
+        tableModel = new DefaultTableModel(tableData, titles);
+        table = new JTable(tableModel) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
     }
 
