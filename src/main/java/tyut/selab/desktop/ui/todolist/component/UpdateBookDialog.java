@@ -42,7 +42,7 @@ public class UpdateBookDialog extends JDialog {
 
         //组装图书名称
         Box nameBox = Box.createHorizontalBox();
-        JLabel nameLable = new JLabel("图书名称：");
+        JLabel nameLable = new JLabel("任务编号：");
         nameField = new JTextField(15);
 
         nameBox.add(nameLable);
@@ -51,7 +51,7 @@ public class UpdateBookDialog extends JDialog {
 
         //组装图书库存
         Box stockBox = Box.createHorizontalBox();
-        JLabel stockLable = new JLabel("图书库存：");
+        JLabel stockLable = new JLabel("用户学号：");
         stockField = new JTextField(15);
 
         stockBox.add(stockLable);
@@ -60,7 +60,7 @@ public class UpdateBookDialog extends JDialog {
 
         //组装图书作者
         Box authorBox = Box.createHorizontalBox();
-        JLabel authorLable = new JLabel("图书作者：");
+        JLabel authorLable = new JLabel("开始日期：");
         authorField = new JTextField(15);
 
         authorBox.add(authorLable);
@@ -69,7 +69,7 @@ public class UpdateBookDialog extends JDialog {
 
         //组装图书价格
         Box priceBox = Box.createHorizontalBox();
-        JLabel priceLable = new JLabel("图书价格：");
+        JLabel priceLable = new JLabel("截止日期：");
          priceField = new JTextField(15);
 
         priceBox.add(priceLable);
@@ -79,7 +79,7 @@ public class UpdateBookDialog extends JDialog {
 
         //组装图书简介
         Box descBox = Box.createHorizontalBox();
-        JLabel descLable = new JLabel("图书简介：");
+        JLabel descLable = new JLabel("任务介绍：");
         descArea = new JTextArea(3,15);
 
         descBox.add(descLable);
@@ -118,7 +118,9 @@ public class UpdateBookDialog extends JDialog {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-
+                JOptionPane.showMessageDialog(jf,"修改成功");
+                dispose();
+                listener.done(null);
             }
         });
         //TODO 处理修改的行为

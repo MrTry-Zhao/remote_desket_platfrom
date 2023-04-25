@@ -1,9 +1,6 @@
 package tyut.selab.desktop.ui.todolist.component;
 
 
-
-
-
 import tyut.selab.desktop.moudle.todolist.controller.impl.TaskController;
 import tyut.selab.desktop.moudle.todolist.domain.vo.TaskVo;
 import tyut.selab.desktop.ui.todolist.listener.ActionDoneListener;
@@ -13,11 +10,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 public class BookManageComponent extends Box {
@@ -109,12 +108,12 @@ public class BookManageComponent extends Box {
                 //获取所选行的数据
                 Integer taskID = Integer.valueOf(tableModel.getValueAt(selectedRow, 0).toString());
                 Integer userStudentNumber = Integer.valueOf(tableModel.getValueAt(selectedRow, 1).toString());
-                String taskST = tableModel.getValueAt(selectedRow, 2).toString();
-                String taskET = tableModel.getValueAt(selectedRow, 3).toString();
-                String taskContent = tableModel.getValueAt(selectedRow, 4).toString();
+                String taskContent = tableModel.getValueAt(selectedRow, 2).toString();
+                String taskST = tableModel.getValueAt(selectedRow, 3).toString();
+                String taskET = tableModel.getValueAt(selectedRow, 4).toString();
 
-                SimpleDateFormat taskStartTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat taskEndTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat taskStartTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat taskEndTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                 Date taskStartTime = null;
                 Date taskEndTime = null;
@@ -126,13 +125,14 @@ public class BookManageComponent extends Box {
                 }
 
                 //删除数据
-                TaskVo taskVo = new TaskVo(taskID,userStudentNumber,taskContent,taskStartTime,taskEndTime);
+                TaskVo taskVo = new TaskVo(taskID, userStudentNumber, taskContent, taskStartTime, taskEndTime);
                 TaskController taskController = new TaskController();
                 try {
                     taskController.deleteTask(taskVo);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+                requestData();
 
             }
         });
@@ -162,18 +162,76 @@ public class BookManageComponent extends Box {
 
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane);
-
+        requestData();
 
     }
 
     //请求数据
     public void requestData() {
+        // 连接数据库
+        String url = "jdbc:mysql:///desket_platfrom";
+        String username = "root";
+        String password = "159753";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, username, password);
+            // 查询表格数据
+            String sql = "SELECT task_id, user_student_number, task_content, task_start_time, task_end_time FROM user_tasks_list";
+            Statement stmt = null;
+            ResultSet rs = null;
+            try {
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
+                // 将查询结果存储在一个列表中
+                List<List<Object>> data = new ArrayList<>();
+                while (rs.next()) {
+                    java.util.List<Object> row = new ArrayList<Object>();
+                    row.add(rs.getInt("task_id"));
+                    row.add(rs.getString("user_student_number"));
+                    row.add(rs.getString("task_content"));
+                    row.add(rs.getDate("task_start_time"));
+                    row.add(rs.getDate("task_end_time"));
+                    data.add(row);
+                }
+                tableData.clear();
+                // 遍历查询结果，将每行数据添加到tableData中
+                for (java.util.List<Object> row : data) {
+                    Vector<Object> rowData = new Vector<>();
+                    rowData.addAll(row);
+                    tableData.add(rowData);
+                }
 
-        //清空tableData的数据
-        tableData.clear();
-        //刷新表格
-        tableModel.fireTableDataChanged();
 
+                // 更新表格模型
+                tableModel.fireTableDataChanged();
+            } finally {
+                // 关闭ResultSet和Statement
+                if (rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            // 关闭连接
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
-
 }

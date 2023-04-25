@@ -1,5 +1,6 @@
 package tyut.selab.desktop.moudle.todolist.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Task {
@@ -63,5 +64,12 @@ public class Task {
 
     public void setTaskEndTime(Date taskEndTime) {
         this.taskEndTime = taskEndTime;
+    }
+    public String MyToString(Date taskEndTime){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = sdf.format(taskEndTime);
+        return strDate;
+
     }
 }

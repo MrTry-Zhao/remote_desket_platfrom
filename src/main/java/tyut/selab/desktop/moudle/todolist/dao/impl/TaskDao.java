@@ -35,12 +35,14 @@ public class TaskDao extends baseDao implements ITaskDao {
 
 
     public int insertTask(Task task) throws SQLException {
-        int len = executeUpdate("INSERT INTO user_tasks_list \n" +
+        Task task1 = new Task();
+        int len = executeUpdate("INSERT INTO user_tasks_list (\n" +
                 "\t user_student_number,\n" +
                 "\t task_content,\n" +
                 "\t task_start_time,\n" +
                 "\t task_end_time)\n" +
-                "\t VALUES (?,?,?,?);", task.getUserStudentNumber(), task.getTaskContent(), task.getTaskStartTime(), task.getTaskEndTime());
+                "\t VALUES (?,?,?,?);", task.getUserStudentNumber(), task.getTaskContent(),
+                task1.MyToString(task.getTaskStartTime()), task1.MyToString(task.getTaskEndTime()));
 
         return 0;
     }

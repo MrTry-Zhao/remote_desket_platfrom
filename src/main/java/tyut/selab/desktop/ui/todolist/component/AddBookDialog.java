@@ -18,8 +18,7 @@ import java.util.*;
 
 public class AddBookDialog extends JDialog {
     private JTable table;
-    private Vector<String> titles;
-    private Vector<Vector> tableData;
+
     private DefaultTableModel tableModel;
     final int WIDTH = 400;
     final int HEIGHT = 300;
@@ -113,7 +112,6 @@ public class AddBookDialog extends JDialog {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-
                 JOptionPane.showMessageDialog(jf, "添加成功");
 
                 dispose();
@@ -149,14 +147,20 @@ public class AddBookDialog extends JDialog {
     }
 
     public void requestData(TaskVo taskVo) {
-
-        String ts = " "+taskVo.getTaskId() + taskVo.getUserStudentNumber() +
-                taskVo.getTaskContent() + taskVo.getTaskStartTime() + taskVo.getTaskEndTime();
+        Vector<String> titles;
+        Vector<Vector> tableData;
         titles = new Vector<>();
-        titles.addAll(Arrays.asList(ts));
-
         tableData = new Vector<>();
 
+
+        //添加数据
+        Vector<Object> rowData = new Vector<>();
+        rowData.add(taskVo.getTaskId());
+        rowData.add(taskVo.getUserStudentNumber());
+        rowData.add(taskVo.getTaskContent());
+        rowData.add(taskVo.MyToString(taskVo.getTaskStartTime()));
+        rowData.add(taskVo.MyToString(taskVo.getTaskEndTime()));
+        tableData.add(rowData);
         tableModel = new DefaultTableModel(tableData, titles);
         table = new JTable(tableModel) {
             @Override
@@ -164,6 +168,13 @@ public class AddBookDialog extends JDialog {
                 return false;
             }
         };
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableModel.fireTableDataChanged();
+
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.add(scrollPane);
+
 
     }
 
