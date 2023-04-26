@@ -4,6 +4,7 @@ package tyut.selab.desktop.ui.todolist.component;
 import tyut.selab.desktop.moudle.todolist.controller.impl.TaskController;
 import tyut.selab.desktop.moudle.todolist.domain.vo.TaskVo;
 import tyut.selab.desktop.ui.todolist.listener.ActionDoneListener;
+import tyut.selab.desktop.ui.todolist.utils.AlarmClock01;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-public class BookManageComponent extends Box {
+public class UserBookManageComponent extends Box {
     final int WIDTH = 850;
     final int HEIGHT = 600;
 
@@ -27,9 +28,10 @@ public class BookManageComponent extends Box {
     private JTable table;
     private Vector<String> titles;
     private Vector<Vector> tableData;
+    private List<TaskVo>  quarryTableData;
     private DefaultTableModel tableModel;
 
-    public BookManageComponent(JFrame jf) {
+    public UserBookManageComponent(JFrame jf) {
         //垂直布局
         super(BoxLayout.Y_AXIS);
         //组装视图
@@ -44,11 +46,18 @@ public class BookManageComponent extends Box {
         JButton updateBtn = new JButton("修改");
         JButton deleteBtn = new JButton("删除");
         JButton queryBtn = new JButton("查询");
+        AlarmClock01 alarmClock01 = new AlarmClock01();
+        alarmClock01.start();
 
         queryBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new quarryUserDialog(table,tableData,tableModel,jf, "查询任务", true, new ActionDoneListener() {
+                    @Override
+                    public void done(Object result) {
+                        quarryRequestData();
+                    }
+                }).setVisible(true);
             }
         });
 
@@ -56,7 +65,7 @@ public class BookManageComponent extends Box {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //弹出一个对话框，让用户输入图书的信息
-                new AddBookDialog(jf, "添加图书", true, new ActionDoneListener() {
+                new AddBookDialog(jf, "增加任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
                         requestData();
@@ -79,7 +88,7 @@ public class BookManageComponent extends Box {
                 String id = tableModel.getValueAt(selectedRow, 0).toString();
 
                 //弹出一个对话框，让用户修改
-                new UpdateBookDialog(jf, "修改任务", true, new ActionDoneListener() {
+                new UserUpdateBookDialog(table,tableData,tableModel,jf, "修改任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
                         requestData();
@@ -140,6 +149,7 @@ public class BookManageComponent extends Box {
         btnPanel.add(addBtn);
         btnPanel.add(updateBtn);
         btnPanel.add(deleteBtn);
+        btnPanel.add(queryBtn);
 
         this.add(btnPanel);
 
@@ -149,6 +159,7 @@ public class BookManageComponent extends Box {
         titles.addAll(Arrays.asList(ts));
 
         tableData = new Vector<>();
+        quarryTableData = new Vector<>();
 
         tableModel = new DefaultTableModel(tableData, titles);
         table = new JTable(tableModel) {
@@ -164,6 +175,11 @@ public class BookManageComponent extends Box {
         this.add(scrollPane);
         requestData();
 
+    }
+
+
+    public UserBookManageComponent(int axis) {
+        super(axis);
     }
 
     //请求数据
@@ -234,4 +250,9 @@ public class BookManageComponent extends Box {
             }
         }
     }
+
+    public void quarryRequestData(){
+
+    }
 }
+

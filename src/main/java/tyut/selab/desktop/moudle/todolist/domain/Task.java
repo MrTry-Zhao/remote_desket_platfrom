@@ -67,7 +67,7 @@ public class Task {
     }
     public String MyToString(Date taskEndTime){
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ");
         String strDate = sdf.format(taskEndTime);
         return strDate;
 

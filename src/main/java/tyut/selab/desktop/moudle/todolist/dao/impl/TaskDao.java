@@ -20,9 +20,9 @@ public class TaskDao extends baseDao implements ITaskDao {
                 "\tuser_student_number AS userStudentNumber , \n" +
                 "\ttask_content AS taskContent,\n" +
                 "\ttask_start_time AS taskStartTime,\n" +
-                "\ttask_end_time AS taskEndTime,\n" +
-                "\tFROM`user_tasks_list` \n" +
-                "\tWHERE userStudentNumber=?;", studentNumber);
+                "\ttask_end_time AS taskEndTime\n" +
+                "\tFROM user_tasks_list \n" +
+                "\tWHERE user_Student_Number=?;", studentNumber);
 
         return task;
     }

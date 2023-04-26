@@ -45,6 +45,7 @@ public class AlarmClock01 {
                 }
             }
 
+            stmt.close();
             conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();

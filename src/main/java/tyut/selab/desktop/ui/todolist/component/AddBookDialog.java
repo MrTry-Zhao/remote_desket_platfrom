@@ -42,7 +42,7 @@ public class AddBookDialog extends JDialog {
 //        nameBox.add(Box.createHorizontalStrut(20));
 //        nameBox.add(nameField);
 
-        //组装图书库存
+        //组装用户编号
 //        Box stockBox = Box.createHorizontalBox();
 //        JLabel stockLable = new JLabel("用户编号：");
 //        JTextField stockField = new JTextField(15);
