@@ -51,13 +51,13 @@ public class UserUpdateBookDialog extends JDialog {
 //        nameBox.add(nameField);
 
         //组装用户学号
-        Box stockBox = Box.createHorizontalBox();
-        JLabel stockLable = new JLabel("用户学号：");
-        stockField = new JTextField(15);
-
-        stockBox.add(stockLable);
-        stockBox.add(Box.createHorizontalStrut(20));
-        stockBox.add(stockField);
+//        Box stockBox = Box.createHorizontalBox();
+//        JLabel stockLable = new JLabel("用户学号：");
+//        stockField = new JTextField(15);
+//
+//        stockBox.add(stockLable);
+//        stockBox.add(Box.createHorizontalStrut(20));
+//        stockBox.add(stockField);
 
 //        组装开始日期
 //        Box authorBox = Box.createHorizontalBox();
@@ -72,6 +72,10 @@ public class UserUpdateBookDialog extends JDialog {
         Box priceBox = Box.createHorizontalBox();
         JLabel priceLable = new JLabel("截止日期：");
         priceField = new JTextField(15);
+        CalendarPanel p = new CalendarPanel(priceField, "yyyy-MM-dd");
+        p.initCalendarPanel();
+        add(p);
+        add(priceField);
 
         priceBox.add(priceLable);
         priceBox.add(Box.createHorizontalStrut(20));
@@ -98,9 +102,27 @@ public class UserUpdateBookDialog extends JDialog {
 
                 //获取用户修改后在输入框中输入的内容
                 Integer taskID = Integer.valueOf(tableModel.getValueAt(selectedRow, 0).toString());
-                Integer userStudentNumber = Integer.valueOf(stockField.getText().trim());
+
+
+
+
+
+
+
+
+                Integer userStudentNumber = 2022005553;
+
+
+
+
+
+
                 String taskST = null;
                 String taskET = priceField.getText().trim();
+                CalendarPanel p = new CalendarPanel(priceField, "yyyy-MM-dd");
+                p.initCalendarPanel();
+                add(p);
+                add(priceField);
                 String taskContent = descArea.getText().trim();
 
                 SimpleDateFormat taskStartTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
@@ -132,8 +154,8 @@ public class UserUpdateBookDialog extends JDialog {
 
 //        vBox.add(Box.createVerticalStrut(20));
 //        vBox.add(nameBox);
-        vBox.add(Box.createVerticalStrut(15));
-        vBox.add(stockBox);
+//        vBox.add(Box.createVerticalStrut(15));
+//        vBox.add(stockBox);
 //        vBox.add(Box.createVerticalStrut(15));
 //        vBox.add(authorBox);
         vBox.add(Box.createVerticalStrut(15));

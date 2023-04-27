@@ -28,6 +28,15 @@ public class quarryUserDialog extends JDialog {
 
         Box vBox = Box.createVerticalBox();
 
+        //组装图书名称
+//        Box nameBox = Box.createHorizontalBox();
+//        JLabel nameLable = new JLabel("任务编号：");
+//        JTextField nameField = new JTextField(15);
+//
+//        nameBox.add(nameLable);
+//        nameBox.add(Box.createHorizontalStrut(20));
+//        nameBox.add(nameField);
+
         //组装用户编号
         Box stockBox = Box.createHorizontalBox();
         JLabel stockLable = new JLabel("用户编号：");
@@ -37,6 +46,38 @@ public class quarryUserDialog extends JDialog {
         stockBox.add(Box.createHorizontalStrut(20));
         stockBox.add(stockField);
 
+        //组装任务简介
+//        Box descBox = Box.createHorizontalBox();
+//        JLabel descLable = new JLabel("任务介绍：");
+//        JTextArea descArea = new JTextArea(3, 15);
+//
+//        descBox.add(descLable);
+//        descBox.add(Box.createHorizontalStrut(20));
+//        descBox.add(descArea);
+////
+//        //组装开始日期
+//        Box authorBox = Box.createHorizontalBox();
+//        JLabel authorLable = new JLabel("开始日期：");
+//        JTextField authorField = new JTextField(15);
+//
+//        authorBox.add(authorLable);
+//        authorBox.add(Box.createHorizontalStrut(20));
+//        authorBox.add(authorField);
+
+        //组装截止日期
+//        Box priceBox = Box.createHorizontalBox();
+//        JLabel priceLable = new JLabel("截止日期：");
+//        JTextField priceField = new JTextField(15);
+//        CalendarPanel p = new CalendarPanel(priceField, "yyyy-MM-dd");
+//        p.initCalendarPanel();
+//        add(p);
+//        add(priceField);
+//
+//        priceBox.add(priceLable);
+//        priceBox.add(Box.createHorizontalStrut(20));
+//        priceBox.add(priceField);
+
+
 
         //组装按钮
         Box btnBox = Box.createHorizontalBox();
@@ -44,15 +85,21 @@ public class quarryUserDialog extends JDialog {
         quarryBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //获取用户的录入
-                Integer taskID = Integer.parseInt(stockField.getText().trim());
 
+                //获取用户的录入
+                Integer userStudentNumber ;
+                try {
+                    userStudentNumber = Integer.parseInt(stockField.getText().trim());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(jf, "请输入正确格式");
+                    return; // 结束查询操作
+                }
                 //查询数据
                 TaskController taskController = new TaskController();
 
                 List<TaskVo> data;
                 try {
-                    data = taskController.queryAllTask(taskID);
+                    data = taskController.queryAllTask(userStudentNumber);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 } catch (NoSuchFieldException ex) {
@@ -62,11 +109,21 @@ public class quarryUserDialog extends JDialog {
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException(ex);
                 }
+                if (data.isEmpty()) {
+                    JOptionPane.showMessageDialog(jf, "查无此人");
+                    return;
+                }
 
                 tableData.clear();
                 for (TaskVo vo: data) {
+                    java.util.List<Object> row = new ArrayList<Object>();
+                    row.add(vo.getTaskId());
+                    row.add(vo.getUserStudentNumber());
+                    row.add(vo.getTaskContent());
+                    row.add(vo.getTaskStartTime());
+                    row.add(vo.getTaskEndTime());
                     Vector<Object> rowData = new Vector<>();
-                    rowData.add(vo);
+                    rowData.addAll(row);
                     tableData.add(rowData);
                 }
 
@@ -80,94 +137,31 @@ public class quarryUserDialog extends JDialog {
             }
         });
 
-        btnBox.add(quarryBtn);
+//        btnBox.add(addBtn);
 
-        vBox.add(Box.createVerticalStrut(20));
-        vBox.add(stockField);
+//        vBox.add(Box.createVerticalStrut(20));
+//        vBox.add(nameBox);
+        vBox.add(Box.createVerticalStrut(110));
+        vBox.add(stockBox);
+//        vBox.add(Box.createVerticalStrut(15));
+//        vBox.add(descBox);
+//        vBox.add(Box.createVerticalStrut(15));
+//        vBox.add(authorBox);
+//        vBox.add(Box.createVerticalStrut(15));
+//        vBox.add(priceBox);
 
-        vBox.add(Box.createVerticalStrut(15));
+        vBox.add(Box.createVerticalStrut(110));
         vBox.add(btnBox);
-
 
         //为了左右有间距，在vBox外层封装一个水平的Box，添加间隔
         Box hBox = Box.createHorizontalBox();
-        hBox.add(Box.createHorizontalStrut(20));
+        hBox.add(Box.createHorizontalStrut(40));
         hBox.add(vBox);
-        hBox.add(Box.createHorizontalStrut(20));
+        hBox.add(Box.createHorizontalStrut(40));
 
         this.add(hBox);
     }
 
-    //    public void requestData() {
-//        // 连接数据库
-//        String url = "jdbc:mysql:///desket_platfrom";
-//        String username = "root";
-//        String password = "159753";
-//        Connection conn = null;
-//        try {
-//            conn = DriverManager.getConnection(url, username, password);
-//            // 查询表格数据
-//            String sql = "SELECT task_id, user_student_number, task_content, task_start_time, task_end_time FROM user_tasks_list";
-//            Statement stmt = null;
-//            ResultSet rs = null;
-//            try {
-//                stmt = conn.createStatement();
-//                rs = stmt.executeQuery(sql);
-//                // 将查询结果存储在一个列表中
-//                List<List<Object>> data = new ArrayList<>();
-//                while (rs.next()) {
-//                    java.util.List<Object> row = new ArrayList<Object>();
-//                    row.add(rs.getInt("task_id"));
-//                    row.add(rs.getString("user_student_number"));
-//                    row.add(rs.getString("task_content"));
-//                    row.add(rs.getDate("task_start_time"));
-//                    row.add(rs.getDate("task_end_time"));
-//                    data.add(row);
-//                }
-//                tableData.clear();
-//                // 遍历查询结果，将每行数据添加到tableData中
-//                for (java.util.List<Object> row : data) {
-//                    Vector<Object> rowData = new Vector<>();
-//                    rowData.addAll(row);
-//                    tableData.add(rowData);
-//                }
-//
-//
-//                // 更新表格模型
-//                tableModel.fireTableDataChanged();
-//            } finally {
-//                // 关闭ResultSet和Statement
-//                if (rs != null) {
-//                    try {
-//                        rs.close();
-//                    } catch (SQLException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//                if (stmt != null) {
-//                    try {
-//                        stmt.close();
-//                    } catch (SQLException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        } finally {
-//            // 关闭连接
-//            if (conn != null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-    public void quarryRequestData() {
-
-    }
 
 }
 

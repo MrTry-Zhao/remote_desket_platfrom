@@ -55,7 +55,7 @@ public class UserBookManageComponent extends Box {
                 new quarryUserDialog(table,tableData,tableModel,jf, "查询任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
-                        quarryRequestData();
+
                     }
                 }).setVisible(true);
             }
@@ -65,7 +65,7 @@ public class UserBookManageComponent extends Box {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //弹出一个对话框，让用户输入图书的信息
-                new AddBookDialog(jf, "增加任务", true, new ActionDoneListener() {
+                new UserAddBookDialog(jf, "增加任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
                         requestData();
@@ -149,7 +149,6 @@ public class UserBookManageComponent extends Box {
         btnPanel.add(addBtn);
         btnPanel.add(updateBtn);
         btnPanel.add(deleteBtn);
-        btnPanel.add(queryBtn);
 
         this.add(btnPanel);
 
@@ -183,76 +182,43 @@ public class UserBookManageComponent extends Box {
     }
 
     //请求数据
-    public void requestData() {
-        // 连接数据库
-        String url = "jdbc:mysql:///desket_platfrom";
-        String username = "root";
-        String password = "159753";
-        Connection conn = null;
+    public void requestData(){
+        //获取用户的录入
+        Integer taskID = 2022005553;
+
+        //查询数据
+        TaskController taskController = new TaskController();
+
+        List<TaskVo> data;
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            // 查询表格数据
-            String sql = "SELECT task_id, user_student_number, task_content, task_start_time, task_end_time FROM user_tasks_list";
-            Statement stmt = null;
-            ResultSet rs = null;
-            try {
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery(sql);
-                // 将查询结果存储在一个列表中
-                List<List<Object>> data = new ArrayList<>();
-                while (rs.next()) {
-                    java.util.List<Object> row = new ArrayList<Object>();
-                    row.add(rs.getInt("task_id"));
-                    row.add(rs.getString("user_student_number"));
-                    row.add(rs.getString("task_content"));
-                    row.add(rs.getDate("task_start_time"));
-                    row.add(rs.getDate("task_end_time"));
-                    data.add(row);
-                }
-                tableData.clear();
-                // 遍历查询结果，将每行数据添加到tableData中
-                for (java.util.List<Object> row : data) {
-                    Vector<Object> rowData = new Vector<>();
-                    rowData.addAll(row);
-                    tableData.add(rowData);
-                }
-
-
-                // 更新表格模型
-                tableModel.fireTableDataChanged();
-            } finally {
-                // 关闭ResultSet和Statement
-                if (rs != null) {
-                    try {
-                        rs.close();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                if (stmt != null) {
-                    try {
-                        stmt.close();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
+            data = taskController.queryAllTask(taskID);
         } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            // 关闭连接
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            throw new RuntimeException(ex);
+        } catch (NoSuchFieldException ex) {
+            throw new RuntimeException(ex);
+        } catch (InstantiationException ex) {
+            throw new RuntimeException(ex);
+        } catch (IllegalAccessException ex) {
+            throw new RuntimeException(ex);
         }
+
+        tableData.clear();
+        for (TaskVo vo: data) {
+            java.util.List<Object> row = new ArrayList<Object>();
+            row.add(vo.getTaskId());
+            row.add(vo.getUserStudentNumber());
+            row.add(vo.getTaskContent());
+            row.add(vo.getTaskStartTime());
+            row.add(vo.getTaskEndTime());
+            Vector<Object> rowData = new Vector<>();
+            rowData.addAll(row);
+            tableData.add(rowData);
+        }
+
+        // 更新表格模型
+        tableModel.fireTableDataChanged();
     }
 
-    public void quarryRequestData(){
 
-    }
 }
 

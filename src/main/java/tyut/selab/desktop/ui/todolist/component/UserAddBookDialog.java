@@ -1,7 +1,6 @@
 package tyut.selab.desktop.ui.todolist.component;
 
 
-
 import tyut.selab.desktop.moudle.todolist.controller.impl.TaskController;
 import tyut.selab.desktop.moudle.todolist.domain.vo.TaskVo;
 import tyut.selab.desktop.ui.todolist.listener.ActionDoneListener;
@@ -14,56 +13,56 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
-public class ManagerUpdateBookDialog extends JDialog {
+public class UserAddBookDialog extends JDialog {
+    private JTable table;
+
+    private DefaultTableModel tableModel;
     final int WIDTH = 400;
     final int HEIGHT = 300;
-    private String id;
+
     private ActionDoneListener listener;
-    private Map<String,Object> map;
 
-    private JTextField nameField;
-    private JTextField stockField;
-    private JTextField authorField;
-    private JTextField priceField;
-    private JTextArea descArea;
-    JFrame jf = null;
-
-
-    public ManagerUpdateBookDialog(JTable table, Vector<Vector> tableData, DefaultTableModel tableModel, JFrame jf, String title, boolean isModel, ActionDoneListener listener, String id){
-        super(jf,title,isModel);
-        this.listener  = listener;
-        this.id=id;
+    public UserAddBookDialog(JFrame jf, String title, boolean isModel, ActionDoneListener listener) {
+        super(jf, title, isModel);
+        this.listener = listener;
         //组装视图
-        this.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2,(ScreenUtils.getScreenHeight()-HEIGHT)/2,WIDTH,HEIGHT);
+        this.setBounds((ScreenUtils.getScreenWidth() - WIDTH) / 2, (ScreenUtils.getScreenHeight() - HEIGHT) / 2, WIDTH, HEIGHT);
 
         Box vBox = Box.createVerticalBox();
 
-//        //组装任务编号
+        //组装图书名称
 //        Box nameBox = Box.createHorizontalBox();
 //        JLabel nameLable = new JLabel("任务编号：");
-//        nameField = new JTextField(15);
+//        JTextField nameField = new JTextField(15);
 //
 //        nameBox.add(nameLable);
 //        nameBox.add(Box.createHorizontalStrut(20));
 //        nameBox.add(nameField);
 
-        //组装用户学号
-        Box stockBox = Box.createHorizontalBox();
-        JLabel stockLable = new JLabel("用户学号：");
-        stockField = new JTextField(15);
+        //组装用户编号
+//        Box stockBox = Box.createHorizontalBox();
+//        JLabel stockLable = new JLabel("用户编号：");
+//        JTextField stockField = new JTextField(15);
+//
+//        stockBox.add(stockLable);
+//        stockBox.add(Box.createHorizontalStrut(20));
+//        stockBox.add(stockField);
 
-        stockBox.add(stockLable);
-        stockBox.add(Box.createHorizontalStrut(20));
-        stockBox.add(stockField);
+        //组装任务简介
+        Box descBox = Box.createHorizontalBox();
+        JLabel descLable = new JLabel("任务介绍：");
+        JTextArea descArea = new JTextArea(3, 15);
 
-        //组装开始日期
+        descBox.add(descLable);
+        descBox.add(Box.createHorizontalStrut(20));
+        descBox.add(descArea);
+//
+//        //组装开始日期
 //        Box authorBox = Box.createHorizontalBox();
 //        JLabel authorLable = new JLabel("开始日期：");
-//        authorField = new JTextField(15);
+//        JTextField authorField = new JTextField(15);
 //
 //        authorBox.add(authorLable);
 //        authorBox.add(Box.createHorizontalStrut(20));
@@ -72,7 +71,7 @@ public class ManagerUpdateBookDialog extends JDialog {
         //组装截止日期
         Box priceBox = Box.createHorizontalBox();
         JLabel priceLable = new JLabel("截止日期：");
-         priceField = new JTextField(15);
+        JTextField priceField = new JTextField(15);
         CalendarPanel p = new CalendarPanel(priceField, "yyyy-MM-dd");
         p.initCalendarPanel();
         add(p);
@@ -83,34 +82,22 @@ public class ManagerUpdateBookDialog extends JDialog {
         priceBox.add(priceField);
 
 
-        //组装任务介绍
-        Box descBox = Box.createHorizontalBox();
-        JLabel descLable = new JLabel("任务介绍：");
-        descArea = new JTextArea(3,15);
-
-        descBox.add(descLable);
-        descBox.add(Box.createHorizontalStrut(20));
-        descBox.add(new JScrollPane(descArea));
-
         //组装按钮
         Box btnBox = Box.createHorizontalBox();
-        JButton updateBtn = new JButton("修改");
-        updateBtn.addActionListener(new ActionListener() {
+        JButton addBtn = new JButton("添加");
+        addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //获取当前表格选中的id
-                int selectedRow = table.getSelectedRow();//如果有选中的条目，则返回条目的行号，如果没有选中，那么返回-1
-
-                //获取用户修改后在输入框中输入的内容
-                Integer taskID = Integer.valueOf(tableModel.getValueAt(selectedRow, 0).toString());
-                Integer userStudentNumber = Integer.valueOf(stockField.getText().trim());
+                //获取用户的录入
+                Integer taskID = null;
+                Integer userStudentNumber = 2022005553;
                 String taskST = null;
                 String taskET = priceField.getText().trim();
 
                 String taskContent = descArea.getText().trim();
-
-                SimpleDateFormat taskStartTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat taskEndTimeFormat=new SimpleDateFormat("yyyy-MM-dd");
+                //String转Date
+                SimpleDateFormat taskStartTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat taskEndTimeFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                 Date taskStartTime = null;
                 Date taskEndTime = null;
@@ -121,32 +108,35 @@ public class ManagerUpdateBookDialog extends JDialog {
                     throw new RuntimeException(ex);
                 }
 
-                TaskVo taskVo = new TaskVo(taskID,userStudentNumber,taskContent,taskStartTime,taskEndTime);
+                //添加数据
                 TaskController taskController = new TaskController();
+                TaskVo taskVo = new TaskVo(taskID, userStudentNumber, taskContent, taskStartTime, taskEndTime);
                 try {
-                    taskController.updateTask(taskVo);
+                    taskController.insertTask(taskVo);
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+                JOptionPane.showMessageDialog(jf, "添加成功");
 
-                JOptionPane.showMessageDialog(jf,"修改成功");
                 dispose();
                 listener.done(null);
             }
         });
-        //TODO 处理修改的行为
-        btnBox.add(updateBtn);
+
+
+        btnBox.add(addBtn);
 
 //        vBox.add(Box.createVerticalStrut(20));
 //        vBox.add(nameBox);
+//        vBox.add(Box.createVerticalStrut(15));
+//        vBox.add(stockBox);
         vBox.add(Box.createVerticalStrut(15));
-        vBox.add(stockBox);
+        vBox.add(descBox);
 //        vBox.add(Box.createVerticalStrut(15));
 //        vBox.add(authorBox);
         vBox.add(Box.createVerticalStrut(15));
         vBox.add(priceBox);
-        vBox.add(Box.createVerticalStrut(15));
-        vBox.add(descBox);
+
         vBox.add(Box.createVerticalStrut(15));
         vBox.add(btnBox);
 
@@ -157,12 +147,38 @@ public class ManagerUpdateBookDialog extends JDialog {
         hBox.add(Box.createHorizontalStrut(20));
 
         this.add(hBox);
-        //回显数据
-        requestData();
+
     }
 
-    //请求数据
-    public void requestData(){
+    public void requestData(TaskVo taskVo) {
+        Vector<String> titles;
+        Vector<Vector> tableData;
+        titles = new Vector<>();
+        tableData = new Vector<>();
+
+
+        //添加数据
+        Vector<Object> rowData = new Vector<>();
+        rowData.add(taskVo.getTaskId());
+        rowData.add(taskVo.getUserStudentNumber());
+        rowData.add(taskVo.getTaskContent());
+        rowData.add(taskVo.MyToString(taskVo.getTaskStartTime()));
+        rowData.add(taskVo.MyToString(taskVo.getTaskEndTime()));
+        tableData.add(rowData);
+        tableModel = new DefaultTableModel(tableData, titles);
+        table = new JTable(tableModel) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableModel.fireTableDataChanged();
+
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.add(scrollPane);
+
 
     }
 

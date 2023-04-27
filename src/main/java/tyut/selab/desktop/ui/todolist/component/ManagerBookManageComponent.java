@@ -45,16 +45,23 @@ public class ManagerBookManageComponent extends Box {
         JButton updateBtn = new JButton("修改");
         JButton deleteBtn = new JButton("删除");
         JButton queryBtn = new JButton("查询");
+        JButton exitBtn = new JButton("返回");
         AlarmClock01 alarmClock01 = new AlarmClock01();
         alarmClock01.start();
 
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                requestData();
+            }
+        });
         queryBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new quarryUserDialog(table,tableData,tableModel,jf, "查询任务", true, new ActionDoneListener() {
+                new quarryUserDialog(table, tableData, tableModel, jf, "查询任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
-                        requestData();
+
                     }
                 }).setVisible(true);
             }
@@ -64,7 +71,7 @@ public class ManagerBookManageComponent extends Box {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //弹出一个对话框，让用户输入图书的信息
-                new AddBookDialog(jf, "增加任务", true, new ActionDoneListener() {
+                new ManagerAddBookDialog(jf, "增加任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
                         requestData();
@@ -87,7 +94,7 @@ public class ManagerBookManageComponent extends Box {
                 String id = tableModel.getValueAt(selectedRow, 0).toString();
 
                 //弹出一个对话框，让用户修改
-                new ManagerUpdateBookDialog(table,tableData,tableModel,jf, "修改任务", true, new ActionDoneListener() {
+                new ManagerUpdateBookDialog(table, tableData, tableModel, jf, "修改任务", true, new ActionDoneListener() {
                     @Override
                     public void done(Object result) {
                         requestData();
@@ -148,6 +155,8 @@ public class ManagerBookManageComponent extends Box {
         btnPanel.add(addBtn);
         btnPanel.add(updateBtn);
         btnPanel.add(deleteBtn);
+        btnPanel.add(queryBtn);
+        btnPanel.add(exitBtn);
 
         this.add(btnPanel);
 
@@ -242,4 +251,6 @@ public class ManagerBookManageComponent extends Box {
             }
         }
     }
+
+
 }

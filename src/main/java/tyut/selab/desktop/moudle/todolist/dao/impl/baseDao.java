@@ -56,12 +56,14 @@ public class baseDao {
             T t = clazz.newInstance();
 
 
-            for (int i = 1; i < columCount; i++) {
+            for (int i = 1; i < columCount+1; i++) {
                 Object value = resultSet.getObject(i);
                 //这是对象得属性值
                 String columName = metaData.getColumnLabel(i);
                 Field field = clazz.getDeclaredField(columName);
                 field.setAccessible(true);
+//                Integer temp = Integer.parseInt(String.valueOf(value));
+
                 field.set(t, value);
             }
             list.add(t);
