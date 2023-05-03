@@ -106,7 +106,6 @@ public class ManagerUpdateBookDialog extends JDialog {
                 Integer userStudentNumber = Integer.valueOf(stockField.getText().trim());
                 String taskST = null;
                 String taskET = priceField.getText().trim();
-
                 String taskContent = descArea.getText().trim();
 
                 SimpleDateFormat taskStartTimeFormat=new SimpleDateFormat("yyyy-MM-dd");

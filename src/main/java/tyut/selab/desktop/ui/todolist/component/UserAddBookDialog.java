@@ -130,21 +130,21 @@ public class UserAddBookDialog extends JDialog {
 //        vBox.add(nameBox);
 //        vBox.add(Box.createVerticalStrut(15));
 //        vBox.add(stockBox);
-        vBox.add(Box.createVerticalStrut(15));
+        vBox.add(Box.createVerticalStrut(60));
         vBox.add(descBox);
 //        vBox.add(Box.createVerticalStrut(15));
 //        vBox.add(authorBox);
-        vBox.add(Box.createVerticalStrut(15));
+        vBox.add(Box.createVerticalStrut(50));
         vBox.add(priceBox);
 
-        vBox.add(Box.createVerticalStrut(15));
+        vBox.add(Box.createVerticalStrut(50));
         vBox.add(btnBox);
 
         //为了左右有间距，在vBox外层封装一个水平的Box，添加间隔
         Box hBox = Box.createHorizontalBox();
-        hBox.add(Box.createHorizontalStrut(20));
+        hBox.add(Box.createHorizontalStrut(60));
         hBox.add(vBox);
-        hBox.add(Box.createHorizontalStrut(20));
+        hBox.add(Box.createHorizontalStrut(60));
 
         this.add(hBox);
 

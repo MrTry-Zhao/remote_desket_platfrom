@@ -40,10 +40,10 @@ public class quarryUserDialog extends JDialog {
         //组装用户编号
         Box stockBox = Box.createHorizontalBox();
         JLabel stockLable = new JLabel("用户编号：");
-        JTextField stockField = new JTextField(15);
+        JTextField stockField = new JTextField(10);
 
         stockBox.add(stockLable);
-        stockBox.add(Box.createHorizontalStrut(20));
+        stockBox.add(Box.createHorizontalStrut(15));
         stockBox.add(stockField);
 
         //组装任务简介
@@ -137,11 +137,11 @@ public class quarryUserDialog extends JDialog {
             }
         });
 
-//        btnBox.add(addBtn);
+        btnBox.add(quarryBtn);
 
 //        vBox.add(Box.createVerticalStrut(20));
 //        vBox.add(nameBox);
-        vBox.add(Box.createVerticalStrut(110));
+        vBox.add(Box.createVerticalStrut(100));
         vBox.add(stockBox);
 //        vBox.add(Box.createVerticalStrut(15));
 //        vBox.add(descBox);
@@ -150,14 +150,14 @@ public class quarryUserDialog extends JDialog {
 //        vBox.add(Box.createVerticalStrut(15));
 //        vBox.add(priceBox);
 
-        vBox.add(Box.createVerticalStrut(110));
+        vBox.add(Box.createVerticalStrut(100));
         vBox.add(btnBox);
 
         //为了左右有间距，在vBox外层封装一个水平的Box，添加间隔
         Box hBox = Box.createHorizontalBox();
-        hBox.add(Box.createHorizontalStrut(40));
+        hBox.add(Box.createHorizontalStrut(5));
         hBox.add(vBox);
-        hBox.add(Box.createHorizontalStrut(40));
+        hBox.add(Box.createHorizontalStrut(5));
 
         this.add(hBox);
     }
